@@ -1,0 +1,60 @@
+はい、以下にサンプルコードを用意しました。
+
+親コンポーネント (Parent.vue) でフォームの入力情報を管理し、子コンポーネント (Child.vue) に渡す方法を示します。
+
+html
+Copy code
+<!-- Parent.vue -->
+<template>
+  <div>
+    <form @submit.prevent="submitForm">
+      <label for="name">名前：</label>
+      <input id="name" v-model="name" type="text">
+      <child-component :name="name"></child-component>
+      <button type="submit">送信</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import ChildComponent from './Child.vue';
+
+export default {
+  name: 'ParentComponent',
+  components: {
+    ChildComponent,
+  },
+  data() {
+    return {
+      name: '',
+    };
+  },
+  methods: {
+    submitForm() {
+      // フォームの送信処理
+    },
+  },
+};
+</script>
+上記のコードでは、フォームの入力情報として name を定義し、v-model ディレクティブで双方向データバインディングを行っています。また、<child-component> タグで子コンポーネントを読み込み、:name プロパティに name の値をバインドしています。
+
+html
+Copy code
+<!-- Child.vue -->
+<template>
+  <div>
+    <p>親コンポーネントで入力された名前：{{ name }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ChildComponent',
+  props: {
+    name: String,
+  },
+};
+</script>
+上記のコードでは、props で name を定義し、親コンポーネントから受け取った値を表示しています。
+
+このように、親コンポーネントでフォームの入力情報を管理し、子コンポーネントに渡すことで、コンポーネント間で情報を共有することができます。
