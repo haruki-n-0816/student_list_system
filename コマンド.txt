@@ -1,0 +1,35 @@
+プロジェクトを作成する
+vue create test
+---以下を選択---
+1.Manually select features
+2.プロジェクトにインストールするモジュールの選択
+3.ESLint with error prevention only
+4.Lint on save
+5.In dedicated config files
+6.N
+https://johobase.com/vue-js-cli-create-project/
+
+bootstrapをインストールする
+npm i -S bootstrap
+npm install bootstrap-vue
+https://qiita.com/kurararara/items/620dd4de798a941099f5
+
+サーバー実行
+npm run serve
+y
+
+ルーターをインストールする
+npm install vue-router@3
+
+
+
+
+
+コマンドのログを表示
+doskey /h
+
+---実行するとエラーメッセージが出る---
+eslintのインストール
+npm install eslint --save-dev
+npx eslint --init
+
