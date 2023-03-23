@@ -1,12 +1,14 @@
 プロジェクトを作成する
-vue create test
+vue create 1_project_frontend
 ---以下を選択---
 1.Manually select features
 2.プロジェクトにインストールするモジュールの選択
-3.ESLint with error prevention only
-4.Lint on save
-5.In dedicated config files
-6.N
+3.2.x
+4.y
+5.ESLint with error prevention only
+6.Lint on save
+7.In dedicated config files
+8.N
 https://johobase.com/vue-js-cli-create-project/
 
 bootstrapをインストールする
@@ -21,8 +23,12 @@ y
 ルーターをインストールする
 npm install vue-router@3
 
-
-
+mavenプロジェクト作成
+mvn archetype:generate^
+ -DarchetypeArtifactId=maven-archetype-quickstart^
+ -DinteractiveMode=false^
+ -DgroupId=com.project^
+ -DartifactId=2_project_backend
 
 
 コマンドのログを表示
