@@ -1,48 +1,66 @@
 <template>
-    <div style="text-align: center;">
+    <div class="text-center">
         <h1>新規登録 確認</h1>
-        <form method="post" action="create_complete">
-            <div style="margin-top: 20px; margin-bottom: 20px;">下記の情報で新規登録をします。よろしいですか?</div>
-            <div>
+        <form @submit.prevent="createComplete">
+            <div class="my-4">
+                下記の情報で新規登録をします。よろしいですか?
+            </div>
+            <div class="mb-3">
                 <label>名前:</label>
-                <label>{{ confirmName }}</label>
+                <span>{{ confirmData.name }}</span>
             </div>
-            <div>
+            <div class="mb-3">
                 <label>メールアドレス:</label>
-                <label>{{ confirmMailAddress }}</label>
-                
+                <span>{{ confirmData.email }}</span>
             </div>
-            <!-- <div>
+            <div v-if="confirmData.profileImage" class="mb-3">
                 <label>プロフィール画像</label>
-                <img th:src="'data:image/png;base64,' +${confirmProfileImage}" width="100" height="100">
-                <input type="hidden" name="profileImage" th:value="${confirmProfileImage}" />
-            </div> -->
-            <input class="btn btn-primary rounded-pill btn-lg" type="submit" value="登録" />
-            <b-button pill variant="secondary" size="lg" router-link to="/userIndex">キャンセル</b-button>
+                <img :src="confirmData.profileImage" width="100" height="100" />
+            </div>
+            <button type="submit" class="btn btn-primary rounded-pill btn-lg">
+                登録
+            </button>
+            <b-button pill variant="secondary" size="lg" to="/userIndex">キャンセル</b-button>
         </form>
     </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
-    props:{
-        confirmName:{
-            type: String,
-            required: true
-        },
-        confirmMailAddress:{
-            type: String,
-            required: true
-        }
-    },
     data() {
         return {
-            inputValue: this.inputValue
-        }
+            confirmData: {
+                name: "",
+                email: "",
+                profileImage: "",
+            },
+        };
     },
-    watch: {
-        inputValue(newValue) {
-            this.$emit('input-value-changed', newValue)
-        }
-    }
-}
-</script>
+    created() {
+        // queryパラメーターからデータを取得する
+        const { confirmName, confirmMailAddress } = this.$route.query;
+        this.confirmData.name = confirmName;
+        this.confirmData.email = confirmMailAddress;
+
+        // 画像のデータを取得する
+        axios
+            .get("/api/getImage")
+            .then((response) => {
+                this.confirmData.profileImage = response.data;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    },
+    methods: {
+        createComplete() {
+            // 登録処理を実行する
+            // axios.post("/api/createUser", this.confirmData).then((response) => {
+            //     // 完了画面に遷移する
+            //     this.$router.push("/complete");
+            // });
+        },
+    },
+};
+</script> 
