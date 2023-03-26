@@ -25,7 +25,7 @@ const routes = [
   },
   {
     path: '/userCreateConfirm',
-    name: '/userCreateConfirm',
+    name: 'userCreateConfirm',
     component: UserCreateConfirm
   }
 ]
