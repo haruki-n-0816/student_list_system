@@ -62,7 +62,7 @@ export default {
                     <p>メールアドレス:<block id="userMailAddress"></block></p>
                     <p>こちらのデータを削除します。本当によろしいですか?</p>
                     <div class="btns" style="text-align:center">
-                        <button type="button" id="next" class="btn btn-danger rounded-pill btn-lg" v-on:click="next(user)">削除</button>
+                        <button type="button" id="userDelete" class="btn btn-danger rounded-pill btn-lg" v-on:click="userDelete(user)">削除</button>
                         <button type="button" id="cancel" class="btn btn-secondary rounded-pill btn-lg" v-on:click="cancel()">キャンセル</button>
                     </div>
                 </div>`;
@@ -110,7 +110,7 @@ export default {
 
             $("#overflow").show();
         },
-        async next() {
+        async userDelete() {
             const userId = document.getElementById("userId");
             const id = userId.textContent;
 
@@ -130,7 +130,7 @@ export default {
                 $("#overflow").hide();
             } catch (error) {
                 console.error(error);
-                alert("エラー発生しました。データベースを確認してください");
+                alert("削除エラーが発生しました。データベースを確認してください");
                 $("#conf").remove();
                 $("#overflow").hide();
             }

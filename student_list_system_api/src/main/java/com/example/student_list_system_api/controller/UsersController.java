@@ -39,47 +39,33 @@ public class UsersController {
         return users;
     }
 
-    @GetMapping("/create")
-    private String createUser() {
-
-        return "users/create";
-    }
-
-    @PostMapping("/create_confirm")
-    private String createConfirmUser(@RequestParam("userName") String name,
-            @RequestParam("mailAddress") String mailAddress,
-            @RequestPart("profileImage") MultipartFile profileImage, Model model) throws IOException {
-
-        String base64 = Base64.getEncoder().encodeToString(profileImage.getBytes());
-
-        model.addAttribute("confirmName", name);
-        model.addAttribute("confirmMailAddress", mailAddress);
-        model.addAttribute("confirmProfileImage", base64);
-
-        return "users/create-confirm";
-    }
-
     @PostMapping("/create_complete")
-    public String createCompleteUser(@RequestParam("userName") String name,
-            @RequestParam("mailAddress") String mailAddress,
-            @RequestParam("profileImage") String profileImageString, Model model) throws IOException {
+    public void createCompleteUser(@RequestParam("userNameConfirm") String userNameConfirm,
+            @RequestParam("userMailAddressConfirm") String userMailAddressConfirm,
+            @RequestParam("userImageConfirm") MultipartFile userImageConfirm, Model model) throws IOException {
 
-        byte[] profileImageDecoded = Base64.getDecoder().decode(profileImageString);
+        // 形式変換
+        byte[] profileImageEncode = userImageConfirm.getBytes();
         
+        // 次のid取得
         BigInteger id = service.autoIncrementCountGet();
         
-        String IdTimeFilename = id + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now())
-                + ".png";
+        // 保存ファイル名決定
+        String IdTimeFilename = id + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now()) + userImageConfirm.getContentType();
                 
-        String filePath = "C:/Users/uxauser/road-to-geek/student_list_system/student_list_system/src/main/resources/static/student_list_system_profileImage/"
-                + IdTimeFilename;
-        String filePathDb = "/student_list_system_profileImage/" + IdTimeFilename;
-        
-        Files.write(Paths.get(filePath), profileImageDecoded);
-        
-        service.createUserPost(name, mailAddress, filePathDb);
+        System.out.println("保存先:" + IdTimeFilename);
+        // ファイル保存先決定
+        String filePath = "student_list_system_front/public/student_list_system_profileImage/" + IdTimeFilename;
 
-        return "redirect:/users";
+        // db用保存先
+        String filePathDb = "public/student_list_system_profileImage/" + IdTimeFilename;
+        
+        // 保存処理
+        Files.write(Paths.get(filePath), profileImageEncode);
+        
+        // db登録処理
+        service.createUserPost(userNameConfirm, userMailAddressConfirm, filePathDb);
+
     }
 
     @GetMapping("/delete_complete")
@@ -126,7 +112,7 @@ public class UsersController {
         String IdTimeFilename = id + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now())
                 + ".png";
 
-        String filePath = "C:/Users/uxauser/road-to-geek/student_list_system/student_list_system/src/main/resources/static/student_list_system_profileImage/"
+        String filePath = "student_list_system_front/public/student_list_system_profileImage"
                 + IdTimeFilename;
         String filePathDb = "/student_list_system_profileImage/" + IdTimeFilename;
 

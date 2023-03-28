@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 
 export default {
     data() {
@@ -31,8 +31,18 @@ export default {
         this.userMailAddressConfirm = this.$route.params.userMailAddress;
         this.userImageConfirm = this.$route.params.userImage;
     },
-    createComplete() {
-
+    async createComplete() {
+        try {
+            const response = await axios.post('http://localhost:8081/create_complete', {
+                userNameConfirm: this.userNameConfirm,
+                userMailAddressConfirm: this.userMailAddressConfirm,
+                userImageConfirm: this.userImageConfirm
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+            alert("登録エラーが発生しました。データベースを確認してください");
+        }
     }
 };
 </script> 
