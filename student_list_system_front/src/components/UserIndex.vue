@@ -1,5 +1,6 @@
 <template>
-    <div id="overflow">
+    <div>
+        <div id="overflow"></div>
         <div class="mx-auto h1" style="text-align:center; margin-top:20px;margin-bottom:20px;">
             研修生一覧
         </div>
@@ -23,7 +24,7 @@
                 <td>{{ user.mailAddress }}</td>
                 <td>{{ user.image }}</td>
                 <td>
-                    <img src="/icon/trashbox.png" alt="削除"
+                    <img src="/icon/trashbox.png" alt="削除" style="cursor: pointer;"
                         v-on:click="check({ id: user.id, name: user.name, mailAddress: user.mailAddress })">
                 </td>
                 <td><img src="/icon/pencil.png" alt="編集"></td>
@@ -31,6 +32,7 @@
         </table>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
 import $ from 'jquery';
@@ -38,7 +40,7 @@ import $ from 'jquery';
 export default {
     data() {
         return {
-            users: [],
+            users: []
         }
     },
     mounted() {
@@ -60,8 +62,8 @@ export default {
                     <p>メールアドレス:<block id="userMailAddress"></block></p>
                     <p>こちらのデータを削除します。本当によろしいですか?</p>
                     <div class="btns" style="text-align:center">
-                        <button type="button" class="btn btn-danger rounded-pill btn-lg" v-on:click="next()">削除</button>
-                        <button type="button" class="btn btn-secondary rounded-pill btn-lg" v-on:click="cancel()">キャンセル</button>
+                        <button type="button" id="next" class="btn btn-danger rounded-pill btn-lg" v-on:click="next(user)">削除</button>
+                        <button type="button" id="cancel" class="btn btn-secondary rounded-pill btn-lg" v-on:click="cancel()">キャンセル</button>
                     </div>
                 </div>`;
 
@@ -100,33 +102,38 @@ export default {
             userName.textContent = user.name;
             userMailAddress.textContent = user.mailAddress;
 
+            const deleteButton = document.querySelector("#next");
+            deleteButton.addEventListener("click", this.next);
+
+            const cancelButton = document.querySelector("#cancel");
+            cancelButton.addEventListener("click", this.cancel);
+
             $("#overflow").show();
         },
-        next() {
-            let id = document.getElementById("userId").innerText;
-            let request = new XMLHttpRequest();
-            request.open("post", "/delete_complete", true);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.onreadystatechange = function () {
-                if (request.readyState === 1) {
-                    console.log("openメソッドが呼ばれました");
-                } else if (request.readyState === 2) {
-                    console.log("sendメソッドが呼ばれました");
-                } else if (request.readyState === 3) {
-                    console.log("レスポンスの受信中");
-                }
-                else if (request.readyState === 4 && request.status === 200) {
-                    if (!request.responseText) {
-                        alert("該当するデータはありませんでした");
-                        return;
+        async next() {
+            const userId = document.getElementById("userId");
+            const id = userId.textContent;
+
+            try {
+                const response = await axios.get('http://localhost:8081/delete_complete', {
+                    params: {
+                        id: id
                     }
-                    $("#conf").remove();
-                    $("#overflow").hide();
-                    request.send(null);
-                    location.reload(true);
+                });
+                console.log(response.data);
+
+                const index = this.users.findIndex(user => Number(user.id) === Number(id));
+                if (index !== -1) {
+                    this.users.splice(index, 1);
                 }
-            };
-            request.send("id=" + encodeURIComponent(id));
+                $("#conf").remove();
+                $("#overflow").hide();
+            } catch (error) {
+                console.error(error);
+                alert("エラー発生しました。データベースを確認してください");
+                $("#conf").remove();
+                $("#overflow").hide();
+            }
         },
         cancel() {
             $("#conf").remove();

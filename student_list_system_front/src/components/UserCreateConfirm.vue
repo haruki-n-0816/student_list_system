@@ -1,17 +1,17 @@
 <template>
-    <div class="text-center">
+    <div style="text-align:center">
         <h1>新規登録 確認</h1>
         <form @submit.prevent="createComplete">
             <p>下記の情報で新規登録をします。よろしいですか?</p>
-            <label>名前:{{ $route.params.userName }}</label>
+            <label>名前:{{ userNameConfirm }}</label>
             <br>
-            <label>メールアドレス:{{ $route.params.userMailAddress }}</label>
+            <label>メールアドレス:{{ userMailAddressConfirm }}</label>
             <br>
             <label>プロフィール画像</label>
-            <img :src="$route.params.userImage" width="100" height="100" />
+            <img :src="userImageConfirm" width="100" height="100" />
             <br>
-            <button type="submit" class="btn btn-primary rounded-pill btn-lg">登録</button>
-            <b-button pill variant="secondary" size="lg" to="/userIndex">キャンセル</b-button>
+            <b-button type="submit" pill variant="primary" size="lg">登録</b-button>
+            <b-button pill variant="secondary" size="lg" router-link to="/userIndex">キャンセル</b-button>
         </form>
     </div>
 </template>
@@ -19,12 +19,20 @@
 // import axios from 'axios';
 
 export default {
-    data(){
-        return{
-
+    data() {
+        return {
+            userNameConfirm: '',
+            userMailAddressConfirm: '',
+            userImageConfirm: null
         }
+    },
+    mounted() {
+        this.userNameConfirm = this.$route.params.userName;
+        this.userMailAddressConfirm = this.$route.params.userMailAddress;
+        this.userImageConfirm = this.$route.params.userImage;
+    },
+    createComplete() {
+
     }
-
-
 };
 </script> 

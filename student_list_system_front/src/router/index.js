@@ -4,6 +4,8 @@ import TopPage from '../components/TopPage.vue'
 import UserIndex from '../components/UserIndex.vue'
 import UserCreate from '../components/UserCreate.vue'
 import UserCreateConfirm from '../components/UserCreateConfirm.vue'
+import UserUpdate from '../components/UserUpdate.vue'
+// import UserUpdateConfirm from '../components/UserUpdateConfirm.vue'
 
 Vue.use(VueRouter)
 
@@ -27,7 +29,17 @@ const routes = [
     path: '/userCreateConfirm',
     name: 'userCreateConfirm',
     component: UserCreateConfirm
-  }
+  },
+  {
+    path: '/userUpdate',
+    name: 'userUpdate',
+    component: UserUpdate
+  },
+  // {
+  //   path: '/userUpdateConfirm',
+  //   name: 'userUpdateConfirm',
+  //   component: UserUpdateConfirm
+  // }
 ]
 
 const router = new VueRouter({

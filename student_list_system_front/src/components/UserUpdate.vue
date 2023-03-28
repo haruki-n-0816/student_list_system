@@ -1,7 +1,7 @@
 <template>
     <div style="text-align:center">
-        <h1>研修生 新規登録</h1>
-        <form @submit.prevent="createComfirm">
+        <h1>研修生 編集</h1>
+        <form @submit.prevent="handleSubmit">
             <label>名前</label>
             <input type="text" v-model="userName" />
             <br>
@@ -29,16 +29,16 @@ export default {
         uplodeImage(event) {
             this.userImage = event.target.files[0];
         },
-        createComfirm() {
+        handleSubmit() {
             const reader = new FileReader();
             reader.readAsDataURL(this.userImage);
             reader.onload = () => {
                 this.$router.push({
-                    name: 'userCreateConfirm',
+                    name: 'userUpdateConfirm',
                     params: {
                         userName: this.userName,
                         userMailAddress: this.userMailAddress,
-                        userImage: reader.result,
+                        userImage: reader.userImage,
                     },
                 });
             };

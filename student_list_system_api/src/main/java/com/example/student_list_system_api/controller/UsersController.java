@@ -82,23 +82,11 @@ public class UsersController {
         return "redirect:/users";
     }
 
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam("id") Integer id, @RequestParam("userName") String name,
-            @RequestParam("mailAddress") String mailAddress, Model model) {
-
-        model.addAttribute("confirmId", id);
-        model.addAttribute("confirmName", name);
-        model.addAttribute("confirmMailAddress", mailAddress);
-
-        return "users/delete";
-    }
-
-    @PostMapping("delete_complete")
-    public String deleteCompleteUser(Integer id) {
-
+    @GetMapping("/delete_complete")
+    public void deleteCompleteUserApi(Integer id) {
+        System.out.println("削除対象id:" + id);
         service.deleteUserPost(id);
 
-        return "redirect:/users";
     }
 
     @PostMapping("/update")

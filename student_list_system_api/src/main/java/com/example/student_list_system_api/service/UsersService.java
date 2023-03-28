@@ -78,14 +78,13 @@ public class UsersService {
         for(var record : pathRecord){
             path = (String)record.get("profile_image_path");
         }
-        System.out.println(path);
         
         File file = new File("C:/Users/uxauser/road-to-geek/student_list_system/student_list_system/src/main/resources/static" + path);
 
         if (file.delete()) {
             System.out.println(file.getName() + " を削除しました。");
         } else {
-            System.out.println("ファイルを削除できませんでした。");
+            System.out.println("画像ファイルを削除できませんでした。");
         }
 
         repository.deleteUserRecord(id);
