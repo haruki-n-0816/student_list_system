@@ -22,7 +22,7 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.mailAddress }}</td>
-                <td>{{ user.image }}</td>
+                <td><img :src="user.profileImagePath" alt="プロフィール画像" width="50" height="50"></td>
                 <td>
                     <img src="/icon/trashbox.png" alt="削除" style="cursor: pointer;"
                         v-on:click="check({ id: user.id, name: user.name, mailAddress: user.mailAddress })">
@@ -102,8 +102,8 @@ export default {
             userName.textContent = user.name;
             userMailAddress.textContent = user.mailAddress;
 
-            const deleteButton = document.querySelector("#next");
-            deleteButton.addEventListener("click", this.next);
+            const deleteButton = document.querySelector("#userDelete");
+            deleteButton.addEventListener("click", this.userDelete);
 
             const cancelButton = document.querySelector("#cancel");
             cancelButton.addEventListener("click", this.cancel);

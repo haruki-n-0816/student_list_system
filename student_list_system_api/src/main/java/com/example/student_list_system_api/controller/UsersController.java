@@ -41,29 +41,18 @@ public class UsersController {
 
     @PostMapping("/create_complete")
     public void createCompleteUser(@RequestParam("userNameConfirm") String userNameConfirm,
-            @RequestParam("userMailAddressConfirm") String userMailAddressConfirm,
-            @RequestParam("userImageConfirm") MultipartFile userImageConfirm, Model model) throws IOException {
+    @RequestParam("userMailAddressConfirm") String userMailAddressConfirm, 
+    @RequestParam("userImageConfirm") MultipartFile userImageConfirm) throws IOException {
 
-        // 形式変換
         byte[] profileImageEncode = userImageConfirm.getBytes();
-        
-        // 次のid取得
+
         BigInteger id = service.autoIncrementCountGet();
         
-        // 保存ファイル名決定
-        String IdTimeFilename = id + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now()) + userImageConfirm.getContentType();
-                
-        System.out.println("保存先:" + IdTimeFilename);
-        // ファイル保存先決定
-        String filePath = "student_list_system_front/public/student_list_system_profileImage/" + IdTimeFilename;
-
-        // db用保存先
-        String filePathDb = "public/student_list_system_profileImage/" + IdTimeFilename;
-        
-        // 保存処理
+        String idTimeFilename = id + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now()) + userImageConfirm.getContentType().replace("image/", ".");        
+        String filePath = "../student_list_system_front/public/student_list_system_profileImage/" + idTimeFilename;
+        String filePathDb = "student_list_system_profileImage/" + idTimeFilename;
+            
         Files.write(Paths.get(filePath), profileImageEncode);
-        
-        // db登録処理
         service.createUserPost(userNameConfirm, userMailAddressConfirm, filePathDb);
 
     }
@@ -109,12 +98,12 @@ public class UsersController {
 
         byte[] profileImageDecoded = Base64.getDecoder().decode(profileImageString);
 
-        String IdTimeFilename = id + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now())
+        String idTimeFilename = id + "_" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now())
                 + ".png";
 
         String filePath = "student_list_system_front/public/student_list_system_profileImage"
-                + IdTimeFilename;
-        String filePathDb = "/student_list_system_profileImage/" + IdTimeFilename;
+                + idTimeFilename;
+        String filePathDb = "/student_list_system_profileImage/" + idTimeFilename;
 
         Files.write(Paths.get(filePath), profileImageDecoded);
         

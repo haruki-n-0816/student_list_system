@@ -31,17 +31,32 @@ export default {
         this.userMailAddressConfirm = this.$route.params.userMailAddress;
         this.userImageConfirm = this.$route.params.userImage;
     },
-    async createComplete() {
-        try {
-            const response = await axios.post('http://localhost:8081/create_complete', {
-                userNameConfirm: this.userNameConfirm,
-                userMailAddressConfirm: this.userMailAddressConfirm,
-                userImageConfirm: this.userImageConfirm
-            });
-            console.log(response.data);
-        } catch (error) {
-            console.error(error);
-            alert("登録エラーが発生しました。データベースを確認してください");
+    methods: {
+        async createComplete() {
+            const formData = new FormData();
+            formData.append("userNameConfirm", this.userNameConfirm);
+            formData.append("userMailAddressConfirm", this.userMailAddressConfirm);
+            if (this.userImageConfirm) {
+                const blob = await fetch(this.userImageConfirm).then(r => r.blob());
+                formData.append("userImageConfirm", blob, "newfilename.jpg");
+            }
+
+            try {
+                const response = await axios.post('http://localhost:8081/create_complete', formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+                alert("登録エラーが発生しました。データベースを確認してください");
+            }
+            this.$router.push({
+                    name: 'userIndex'
+                })
         }
     }
 };
