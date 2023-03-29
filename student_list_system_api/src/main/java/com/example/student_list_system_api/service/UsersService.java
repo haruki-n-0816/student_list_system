@@ -79,7 +79,7 @@ public class UsersService {
             path = (String)record.get("profile_image_path");
         }
         
-        File file = new File("C:/Users/uxauser/road-to-geek/student_list_system/student_list_system/src/main/resources/static" + path);
+        File file = new File("../student_list_system_front/public/student_list_system_profileImage/" + path);
 
         if (file.delete()) {
             System.out.println(file.getName() + " を削除しました。");

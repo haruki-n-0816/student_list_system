@@ -9,7 +9,7 @@
             <input type="email" v-model="userMailAddress">
             <br>
             <label>プロフィール画像</label>
-            <input type="file" accept="image/png" @change="uplodeImage" required>
+            <input type="file" accept="image/*" @change="uplodeImage" required>
             <br>
             <b-button type="submit" pill variant="secondary" size="lg">確認</b-button>
             <b-button pill variant="secondary" size="lg" router-link to="/userIndex">キャンセル</b-button>
