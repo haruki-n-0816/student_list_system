@@ -1,5 +1,9 @@
+vuecliのインストール
+npm install -g @vue/cli
+vue --version
+
 プロジェクトを作成する
-vue create 1_project_frontend
+vue create プロジェクト名
 ---以下を選択---
 1.Manually select features
 2.プロジェクトにインストールするモジュールの選択
